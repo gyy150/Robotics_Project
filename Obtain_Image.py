@@ -9,10 +9,10 @@ from naoqi import ALProxy
 import vision_definitions
 from PIL import Image
 
-def Init_Camera(IP, PORT,camera_id):
+def Init_Camera(camera_id):
     print "-----------------------------------------Init_Camera Start------------------"
     global camProxy
-    camProxy = Config.session.service("ALVideoDevice")
+    camProxy = Config.cam_service
     camProxy.setActiveCamera(camera_id)
 
     #print 'camera parameters adjustment:'

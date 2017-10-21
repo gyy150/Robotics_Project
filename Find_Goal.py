@@ -25,9 +25,9 @@ def find_angle_to_turn( detected_goal_list ):
 
 def scan_field():
     print "Start Scanning Field"
-    motion_service = Config.session.service("ALMotion")
+    motion_service = Config.motion_service
 
-    Obtain_Image.Init_Camera(Config.robotIp, Config.PORT, 0)
+    Obtain_Image.Init_Camera( 0)
 
     # set the head to face the centre
     names = ["HeadYaw", "HeadPitch"]

@@ -15,5 +15,5 @@ if __name__ == "__main__":
     ##               "Please check your script arguments. Run with -h option for help.")
     ##        sys.exit(1)
     angle = Find_Goal.scan_field()
-    motion = Config.session.service("ALMotion")
+    motion = Config.motion_service
     motion.moveTo(0.0, 0.0, angle)
