@@ -32,7 +32,7 @@ def Init_Camera(IP, PORT,camera_id):
 
 def GetImage():
     resolution = vision_definitions.kVGA
-    colorSpace = vision_definitions.kYUVColorSpace
+    colorSpace = vision_definitions.kRGBColorSpace
     
     videoClient = camProxy.subscribe("python_client", resolution, colorSpace, 5)
 

@@ -1,7 +1,7 @@
 import qi
 import sys
 
-robotIp = "192.168.2.121"
+robotIp = "192.168.2.112"
 PORT = 9559
 
 print "haha"

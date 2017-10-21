@@ -193,7 +193,7 @@ def main(session):
 if __name__ == "__main__":
 
 
-    robotIp = "192.168.2.121"
+    robotIp = "192.168.2.112"
     PORT = 9559
     session = qi.Session()
     try:

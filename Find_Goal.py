@@ -37,11 +37,11 @@ def Scan_Field():
         motion_service.setAngles(name, angle, fractionMaxSpeed)
         print "Looking at angle:" + str(angle)
         im = Obtain_Image.GetImage()
-        im.show()
+        #im.show()
         picture_name = "camImage"+str(angle) + ".PNG"
         im.save( picture_name , "PNG")
 
-        findgoal(im , picture_name)
+        findgoal(picture_name)
 
         time.sleep(2.0)
         
@@ -52,9 +52,9 @@ def Scan_Field():
     motion_service.setAngles(names, angles, fractionMaxSpeed)
     
     print "Finished Scanning Field"
-def findgoal(img , picture_name):
+def findgoal( picture_name):
     
-    img = cv2.imread( picture_name ,0)
+    img = cv2.imread( picture_name ,  cv2.IMREAD_COLOR  )
 ##    print "Width of the image :" + str(img.shape[1]) #width
 ##    print "Height of the image :" + str(img.shape[0]) #hight
 ##
@@ -70,23 +70,26 @@ def findgoal(img , picture_name):
 ##
 ##    contours,hierarchy , _ = cv2.findContours( binary,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 ##
-
+    #convert the BGR image to HSV format
     hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
     cv2.imshow("HSV Image", hsv)
 
+    #create numpy array representing the range of HSV value
     lower_yellow=np.array((0,100,80),np.uint8)
     higher_yellow=np.array((180,255,255),np.uint8)
+
+    #use cv2.inRange function to extract thee yellow part of the picture
     yellow = cv2.inRange(hsv,lower_yellow, higher_yellow)
     cv2.imshow("Binary Image", yellow)
-	
+
+    #erosion and dilation to bring the segmented image together
     erode = cv2.erode(yellow,None,iterations = 2)
     cv2.imshow("erode Image", erode)
 	
     dilate = cv2.dilate(erode,None,iterations = 3)
     cv2.imshow("dilate Image", dilate)
-	
-	
-#	contours,hierarchy = cv2.findContours(dilate,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+
+    #
     _,contours,hierarchy = cv2.findContours(dilate,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 	
     print "Y-axis : Top to bottom"
