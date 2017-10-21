@@ -10,6 +10,7 @@ import vision_definitions
 from PIL import Image
 
 def Init_Camera(IP, PORT,camera_id):
+    print "-----------------------------------------Init_Camera Start------------------"
     global camProxy
     camProxy = Config.session.service("ALVideoDevice")
     camProxy.setActiveCamera(camera_id)
@@ -26,7 +27,7 @@ def Init_Camera(IP, PORT,camera_id):
     print camProxy.getParameterRange(1 , vision_definitions.kCameraSaturationID )
     
     camProxy.setParameter(1 , vision_definitions.kCameraBrightnessID , ( brightness[1] - brightness[0] )/2 )
-
+    print "-----------------------------------------Init_Camera Finish------------------"
 
      
 
