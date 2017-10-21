@@ -8,6 +8,20 @@ import numpy as np
 import math
 import Obtain_Image
 
+def find_angle_to_turn( detected_goal_list ):
+    print "-----------Start finding turning angle needed to face the goal---------------"
+    min_distance_from_centre = 1000
+    angle_to_turn = 0
+
+    for i in detected_goal_list:
+        if(i[1]< min_distance_from_centre and i[2] > 300 ) :
+            min_distance_from_centre = i[1]
+            angle_to_turn = i[4]
+
+    print angle_to_turn
+    print "-----------Finished finding turning angle needed to face the goal---------------"
+    return angle_to_turn
+
 
 def scan_field():
     print "Start Scanning Field"
@@ -29,7 +43,8 @@ def scan_field():
     number_of_division = 10
     increment = rotation_range / number_of_division
 
-
+    # a list containing the parameters returned from find_goal() function.
+    detected_goal_list = []
 
     for i in range(number_of_division + 1):
         angle = -1.08 + increment * i
@@ -42,8 +57,9 @@ def scan_field():
         picture_name = "camImage" + str(angle) + ".PNG"
         im.save(picture_name, "PNG")
 
-        distance_from_centre, maxdiag, W, H = findgoal(picture_name)
-
+        temp = find_goal(picture_name)
+        temp.append(angle)
+        detected_goal_list.append(temp)
 
         print "-----------------------------------------------------------------"
 
@@ -54,8 +70,17 @@ def scan_field():
 
     print "Finished Scanning Field"
 
+    return find_angle_to_turn(detected_goal_list)
 
-def findgoal(picture_name):
+
+def find_goal(picture_name):
+    """detect the goal in a given picture
+    :param picture_name:
+    :return:    1. distance between centre of max rectangle and centre of the picture
+                 2. diagnal distance of the max rectangle found in the picture
+                3. width of the max rectangle found
+                4. height of the max rectangle found
+    """
     img = cv2.imread(picture_name, cv2.IMREAD_COLOR)
     width = img.shape[1]
     height = img.shape[0]
@@ -96,8 +121,8 @@ def findgoal(picture_name):
     #
     _, contours, hierarchy = cv2.findContours(dilate, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-    print "Y-axis : Top to bottom"
-    print "X-axis : Left to right"
+    # print "Y-axis : Top to bottom"
+    # print "X-axis : Left to right"
 
     Cx, Cy, W, H, X, Y = 0, 0, 0, 0, 0, 0
 
@@ -129,8 +154,8 @@ def findgoal(picture_name):
 
     # print "Estimated real distance 'x' from the line y to the center of the goal is = " + str(Distance)
 
-    cv2.imshow('goal detected Image', img)
-    cv2.waitKey()
+    # cv2.imshow('goal detected Image', img)
+    # cv2.waitKey()
     return [distance_from_centre, maxdiag, W, H]
 
 
