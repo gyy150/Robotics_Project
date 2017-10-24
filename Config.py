@@ -1,10 +1,10 @@
 import qi
 import sys
 
-robotIp = "192.168.2.112"
+robotIp = "192.168.2.109"
 PORT = 9559
 
-print "haha"
+print "----------------------Connecting to Nao-------------------------"
 global session
 session = qi.Session()
 try:
@@ -20,3 +20,4 @@ except RuntimeError:
     print "Error: Cannot connect to NAO"
     sys.exit(1)
 
+print "-------------------------Configuring Done------------------------------------------"

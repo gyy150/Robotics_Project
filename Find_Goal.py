@@ -9,7 +9,7 @@ import math
 import Obtain_Image
 
 def find_angle_to_turn( detected_goal_list ):
-    print "-----------Start finding turning angle needed to face the goal---------------"
+    print "-----------Start finding turning angle needed to face the goal-----------------"
     min_distance_from_centre = 1000
     angle_to_turn = 0
 
@@ -24,10 +24,11 @@ def find_angle_to_turn( detected_goal_list ):
 
 
 def scan_field():
+
     print "Start Scanning Field"
     motion_service = Config.motion_service
 
-    Obtain_Image.Init_Camera( 0)
+    Obtain_Image.Init_Camera(0)
 
     # set the head to face the centre
     names = ["HeadYaw", "HeadPitch"]
@@ -36,7 +37,8 @@ def scan_field():
     motion_service.setAngles(names, angles, fractionMaxSpeed)
 
     # rotate the HeadYaw joint to sacn the field
-    name = "HeadYaw"
+    HEADYAW = "HeadYaw"
+    HEADPITCH = "HeadPitch"
     # rotation range in rad starts from -1.08 to +1.08, therefore total range is 2.16
     rotation_range = 2.16
     # number of steps takes to scan the field
@@ -47,9 +49,15 @@ def scan_field():
     detected_goal_list = []
 
     for i in range(number_of_division + 1):
-        angle = -1.08 + increment * i
-        motion_service.setAngles(name, angle, fractionMaxSpeed)
+        # starting from the right most angle---> devide rotation range by half and take minus
+        angle = -rotation_range/2 + increment * i
+
+        motion_service.setAngles(HEADYAW, angle, fractionMaxSpeed)
         print "Looking at angle:" + str(angle)
+
+        head_pitch_angle = -0.15
+        motion_service.setAngles(HEADPITCH, head_pitch_angle, fractionMaxSpeed)
+
         # sleep for 1 sec to stabilize motion so that blurry image can be avoided
         time.sleep(1.0)
         im = Obtain_Image.GetImage()
@@ -156,6 +164,9 @@ def find_goal(picture_name):
 
     # cv2.imshow('goal detected Image', img)
     # cv2.waitKey()
+
+    #img.save(picture_name, "PNG")
+
     return [distance_from_centre, maxdiag, W, H]
 
 
