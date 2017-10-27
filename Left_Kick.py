@@ -1,4 +1,4 @@
-import time
+import Config
 import qi
 import argparse
 import sys
@@ -7,12 +7,13 @@ import motion as mot
 from naoqi import ALProxy
 
 
-def main(session):
+def left_kick():
     
-    motion = session.service("ALMotion")    
-    posture = session.service("ALRobotPosture")
+    motion = Config.motion_service
+    posture = Config.posture_service
     
-    memory = session.service("ALMemory")
+    memory = Config.memory_service
+
     posture.goToPosture("StandInit", 0.5)
 #-----------------------------------
     TO_RAD = math.pi/180
@@ -193,13 +194,14 @@ def main(session):
 if __name__ == "__main__":
 
 
-    robotIp = "192.168.2.112"
-    PORT = 9559
-    session = qi.Session()
-    try:
-        session.connect("tcp://" + robotIp + ":" + "9559")
-    except RuntimeError:
-        print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
-               "Please check your script arguments. Run with -h option for help.")
-        sys.exit(1)
-    main(session)
+    # robotIp = "192.168.2.112"
+    # PORT = 9559
+    # session = qi.Session()
+    # try:
+    #   session.connect("tcp://" + robotIp + ":" + "9559")
+    # except RuntimeError:
+    #    print ("Can't connect to Naoqi at ip \"" + args.ip + "\" on port " + str(args.port) +".\n"
+    #           "Please check your script arguments. Run with -h option for help.")
+    #    sys.exit(1)
+
+    left_kick()
